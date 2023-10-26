@@ -1,9 +1,5 @@
 'use strict';
 
-
-
-
-
 class Workout {
     date = new Date();
     id = (Date.now() + '').slice(-10);
@@ -12,6 +8,8 @@ class Workout {
         this.coords = coords; //[lat, lng]
         this.distance = distance; //in km
         this.duration = duration; // in min
+
+        console.log(distance, duration)
 
     }
 
@@ -153,15 +151,18 @@ class App {
 
 
         // If activity running, create running object
+        console.log(distance, duration)
         if (type === 'running') {
             const cadence = +inputCadence.value;
             if (
                 // !Number.isFinite(distance) ||
                 // !Number.isFinite(duration) ||
                 // !Number.isFinite(cadence)
-                !validInputs(distance, duration, cadence) || !allPositive(distance, duration, cadence)
+
+                !validInputs(distance, duration, cadence) || !allPositive(distance, duration)
+
             )
-                return alert('Inputs have to be positive numbers!')
+                return alert('All fields must contain values & inputs have to be positive numbers!')
 
             workout = new Running([lat, lng], distance, duration, cadence);
 
@@ -175,7 +176,7 @@ class App {
                 !validInputs(distance, duration, elevation) || !allPositive(distance, duration)
             )
 
-                return alert('Inputs have to be positive numbers!')
+                return alert('All fields must be filled & inputs have to be positive numbers!')
             workout = new Cycling([lat, lng], distance, duration, elevation);
         }
         // Add new object to workout array
@@ -289,6 +290,7 @@ class App {
         })
     }
 
+    // Use app.reset() <<in the console>> to reset values from local storage
     reset() {
         localStorage.removeItem('workouts');
         location.reload();
